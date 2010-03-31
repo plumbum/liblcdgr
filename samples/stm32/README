@@ -1,0 +1,17 @@
+Now ready drivers:
+
+  * ST7637 controller
+  * AL240P1-3S01YG display module (unknow controller)
+
+Test
+====
+
+You can test lib on STM32 Primer 1
+
+  * Connect Primer
+  * go to 'firmware' directory and run openocd
+  * Check lcd.h and uncomment #define LCD_DISPLAY_ST7637
+  * Comment all other LCD_DISPLAY_x defines
+  * run command % make clean && make && make debug
+  * in gdb execute command 'continue'
+
