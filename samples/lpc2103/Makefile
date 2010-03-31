@@ -50,8 +50,7 @@ SRC += irq.c
 SRC += system.c
 SRC += utils.c
 SRC += uart0.c uart_proxy.c
-SRC += i2c.c eeprom.c
-SRC += liblcd/lcd.c
+SRC += ../../liblcd/lcd.c
 
 # List Assembler source files here.
 # Make them always end in a capital .S.  Files ending in a lowercase .s
@@ -77,7 +76,7 @@ DEBUG = dwarf-2
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
 #EXTRAINCDIRS = ./include
-EXTRAINCDIRS = ./liblcd
+EXTRAINCDIRS = ../../liblcd
 
 # Compiler flag to set the C Standard level.
 # c89   - "ANSI" C
@@ -365,5 +364,5 @@ clean_list :
 	tags
 
 tags:
-	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .
+	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . ../../liblcd
 

@@ -46,21 +46,40 @@ typedef uint16_t lcd_data_t;
 
 #include "LPC2103.h"
 
-#define LCD_DELAY() do { asm volatile(" nop "); asm volatile(" nop "); asm volatile(" nop "); } while(0);
-
 #if (LCD_USE_FONT == 1)
 
 #include <avr/pgmspace.h>
 
-prog_char lcd_font_data[] = {
+const char lcd_font_data[] = {
 #include "lcd_font5x8.h"
 };
 
-#define lcdFontAddr(idx) ((char*)lcd_font_data + (idx)*5)
-#define lcdFontByte(addr) pgm_read_byte(addr)
+#define lcdFontAddr(idx) (lcd_font_data + (idx)*5)
+#define lcdFontByte(addr) (*(addr))
 
 #endif
 
+//#define LCD_DELAY()     do { asm volatile(" nop "); asm volatile(" nop "); asm volatile(" nop "); } while(0);
+#define LCD_DELAY()
+
+/*
+#define LCD_DPIN        16
+#define LCD_DMASK       (0xFF<<LCD_DPIN)
+#define LCD_DIR_OUT()   do { FIO0DIR |= LCD_DMASK; } while(0);
+#define LCD_PUT(dat)    do { FIO0CLR = LCD_DMASK; FIO0SET = (((dat)&0xFF)<<LCD_DPIN); } while(0);
+#define LCD_DIR_IN()    do { FIO0DIR &= ~LCD_DMASK; } while(0);
+#define LCD_GET(dat)    do { FIO0CLR = LCD_DMASK; FIO0SET = (((dat)&0xFF)<<LCD_DPIN); } while(0);
+#define LCD_RST_MARK()  do { } while(0);
+#define LCD_RST_REL()   do { } while(0);
+#define LCD_CS_MARK()   do { } while(0);
+#define LCD_CS_REL()    do { } while(0);
+#define LCD_WR_MARK()   do { } while(0);
+#define LCD_WR_REL()    do { } while(0);
+#define LCD_RD_MARK()   do { } while(0);
+#define LCD_RD_REL()    do { } while(0);
+#define LCD_CMD()       do { } while(0);
+#define LCD_DAT()       do { } while(0);
+*/
 
 // MCU pin definitions
 #define D_D0SHIFT  16 
@@ -147,14 +166,35 @@ inline static void lcdHardwarePutW(uint16_t val)
 
 inline static uint8_t lcdHardwareGet(void)
 {
-    return 0;
+    uint8_t dat;
+    FIO0DIR &= ~D_DMASK;
+    FIO0SET = D_DMASK;
+    FIO0CLR = (1<<D_RD);
+    LCD_DELAY();
+    dat = (FIO0PIN>>D_D0SHIFT) & 0xFF;
+    FIO0SET = (1<<D_RD);
+    FIO0DIR |= D_DMASK;
+    return dat;
 }
 
 inline static uint16_t lcdHardwareGetW(void)
 {
-    uint16_t r;
-    r = (0)<<8;
-    return r | (0);
+    uint8_t dat;
+    FIO0DIR &= ~D_DMASK;
+    FIO0SET = D_DMASK;
+    /* First byte */
+    FIO0CLR = (1<<D_RD);
+    LCD_DELAY();
+    dat = ((FIO0PIN>>D_D0SHIFT)<<8) & 0xFF00;
+    FIO0SET = (1<<D_RD);
+    LCD_DELAY();
+    /* Second byte */
+    FIO0CLR = (1<<D_RD);
+    LCD_DELAY();
+    dat |= (FIO0PIN>>D_D0SHIFT) & 0xFF;
+    FIO0SET = (1<<D_RD);
+    FIO0DIR |= D_DMASK;
+    return dat;
 }
 
 #endif /* _LCD_PRIVATE */

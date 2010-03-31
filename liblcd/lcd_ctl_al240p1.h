@@ -95,13 +95,14 @@ typedef struct {
 
 #define lcdControllerColor(color) lcdHardwarePutW(color)
 
+#define INIT_DELAY 20
 inline static void lcdControllerInit(void)
 {
 
-    delayMs(257); // 257 ms after reset
+    delayMs(INIT_DELAY); // 257 ms after reset
     lcdControllerPair(0xE5, 0x8000);
 
-    delayMs(100); // 358 ms after reset
+    delayMs(INIT_DELAY); // 358 ms after reset
     lcdControllerPair(0x00, 0x0001);
     lcdControllerPair(0x01, 0x0100);
     lcdControllerPair(0xe3, 0x3008);
@@ -122,19 +123,19 @@ inline static void lcdControllerInit(void)
     lcdControllerPair(0x12, 0x0003);
     lcdControllerPair(0x13, 0x0300);
 
-    delayMs(200); // 561 ms after reset
+    delayMs(INIT_DELAY*4); // 561 ms after reset
     lcdControllerPair(0x10, 0x1290);
     lcdControllerPair(0x11, 0x0227);
 
-    delayMs(100); // 660 ms after reset
+    delayMs(INIT_DELAY); // 660 ms after reset
     lcdControllerPair(0x12, 0x011C);
 
-    delayMs(100); // 763 ms after reset
+    delayMs(INIT_DELAY); // 763 ms after reset
     lcdControllerPair(0x13, 0x1F00);
     lcdControllerPair(0x29, 0x0009);
     lcdControllerPair(0x2B, 0x000D);
 
-    delayMs(100); // 864 ms after reset
+    delayMs(INIT_DELAY); // 864 ms after reset
     lcdControllerPair(0x20, 0x0000);
     lcdControllerPair(0x21, 0x0000);
     lcdControllerPair(0x30, 0x0004);
@@ -170,7 +171,7 @@ inline static void lcdControllerInit(void)
     lcdControllerPair(0x98, 0x0000);
     lcdControllerPair(0x07, 0x0133);
  
-    delayMs(100);
+    delayMs(INIT_DELAY);
 }
 
 inline static void lcdControllerCommand(lcd_value_t cmd)
