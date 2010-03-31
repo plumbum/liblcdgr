@@ -66,7 +66,7 @@ OPT = s
 # List C source files here. (C dependencies are automatically generated.)
 SRC = main.c
 SRC += helpers.c
-SRC += ../lib/lcd.c
+SRC += ../../liblcd/lcd.c
 
 
 # If there is more than one source file, append them above, or modify and
@@ -91,8 +91,7 @@ ASRC =
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS = ../lib
-
+EXTRAINCDIRS = ../../liblcd
 
 # Place -D or -U options here
 CDEFS = -DF_CPU=$(F_CPU)UL
