@@ -75,7 +75,7 @@ Vectors:
         ldr   pc,[pc,#-0xFF0]           // IRQ - read the VIC
         ldr   pc,_fiq                   // FIQ - _fiq
 
-#if 0
+#if 1
 // Use this group for production
 _undf:  .word _reset                    // undefined - _reset
 _swi:   .word _reset                    // SWI - _reset
