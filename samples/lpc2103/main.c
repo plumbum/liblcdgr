@@ -26,9 +26,14 @@ static void dummyISR(void)
 int main(void)
 {
 	sysInit();
+    /*
     FIO0DIR = 0x0FFF6000;
     FIO0CLR = 0xFFFFFFFF;
     FIO0SET = 0x0F006000;
+    */
+    FIO0DIR = 0x00000000;
+    FIO0CLR = 0xFFFFFFFF;
+    FIO0SET = 0x00000000;
 
     //initVIC(dummyISR); 
 

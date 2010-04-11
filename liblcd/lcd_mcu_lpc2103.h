@@ -94,11 +94,11 @@ const char lcd_font_data[] = {
 
 #define D_DMASK ((1<<D_D0) | (1<<D_D1) | (1<<D_D2) | (1<<D_D3) | (1<<D_D4) | (1<<D_D5) | (1<<D_D6) | (1<<D_D7))
 
-#define D_RS    24
-#define D_RD    26
-#define D_WR    27
-#define D_CS    25
-#define D_RST   13
+#define D_RS    27
+#define D_CS    28
+#define D_RD    29
+#define D_WR    30
+#define D_RST   31
 
 #define D_CTLMASK ((1<<D_RS) | (1<<D_RST) | (1<<D_CS) | (1<<D_RD) | (1<<D_WR))
 
