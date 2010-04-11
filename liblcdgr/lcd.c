@@ -177,6 +177,11 @@ void lcdTextXY(lcd_coord_t x, lcd_coord_t y, char* s)
 #endif
 }
 
+void lcdCircleFill(lcd_coord_t x, lcd_coord_t y, lcd_coord_t radius)
+{
+    lcdControllerCircleFill(x, y, radius, fgclr);
+}
+
 /**
  * @}
  */

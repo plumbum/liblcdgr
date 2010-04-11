@@ -56,6 +56,33 @@ int main(void)
         lcdGetColor(255, 255, 255),
     };
 
+    lcdSetFgColor(lcdGetColor(128, 128, 128));
+    lcdCircleFill(120, 160, 103);
+
+    lcdSetFgColor(lcdGetColor(0, 255, 0));
+    lcdCircleFill(64, 64, 32);
+    lcdSetFgColor(lcdGetColor(0, 0, 255));
+    lcdCircleFill(240-64, 320-64, 32);
+    lcdSetFgColor(lcdGetColor(255, 0, 0));
+    lcdCircleFill(64, 320-64, 32);
+    lcdSetFgColor(lcdGetColor(255, 255, 0));
+    lcdCircleFill(240-64, 64, 32);
+
+    for(;;)
+    {
+        int i;
+        for(i=0; i<8; i++)
+        {
+            int color = color_table[i];
+            int r;
+            for(r=0; r<=100; r++)
+            {
+                lcdSetFgColor(color);
+                lcdCircleFill(120, 160, r);
+            }
+        }
+    }
+
     for(;;)
     {
         int i;

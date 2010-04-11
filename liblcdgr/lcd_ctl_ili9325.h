@@ -303,6 +303,51 @@ inline static void lcdControllerFillRect(lcd_coord_t x1, lcd_coord_t y1, lcd_coo
     lcdHardwareRelease();
 }
 
+inline static unsigned int sqrt_newton(int l)
+{
+      long temp , div;
+      unsigned  rslt = (unsigned)l;
+      if (l <=  0)
+            return 0;
+      else if (l & 0xFFFF0000L)
+            if  (l & 0xFF000000L)
+                  div  = 0x3FFF;
+            else
+                  div  = 0x3FF;
+      else
+            if  (l & 0x0FF00L)
+                  div  = 0x3F;
+            else
+                  div  = (l > 4) ? 0x7 : l;
+      while (1)
+      {
+            temp = l  / div + div;
+            div =  temp >>  1;
+            div += temp  & 1;
+            if  (rslt > div)
+                   rslt = (unsigned)div;
+            else
+            {
+                  if (l / rslt == rslt - 1 && l % rslt == 0)
+                        rslt--;
+                  return rslt;
+            }
+      }
+}
+
+inline static void lcdControllerCircleFill(lcd_coord_t xc, lcd_coord_t yc, lcd_coord_t radius,
+        lcd_color_t fgclr)
+{
+    int x, y;
+    int r2 = radius*radius;
+    for(y=0; y<radius; y++)
+    {
+        x = sqrt_newton(r2 - y*y);
+        lcdControllerFill(xc-x, yc+y, xc+x, yc+y, fgclr);
+        lcdControllerFill(xc-x, yc-y, xc+x, yc-y, fgclr);
+    }
+}
+
 #endif /* _LCD_PRIVATE */
 
 /*
