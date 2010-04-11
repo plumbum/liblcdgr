@@ -9,12 +9,6 @@
 
 #include <string.h>
 
-//extern void delayMs(int ms);
-void delayMs(int ms)
-{
-    delay_us(ms*1000);
-}
-
 /*
 static void dummyISR(void) __attribute__ ((interrupt));
 static void dummyISR(void)
@@ -71,8 +65,9 @@ int main(void)
             int j;
             for(j=0; j<4; j++)
             {
-                int x, y;
-                int clr;
+                int x = 0;
+                int y = 0;
+                int clr = 0;
                 switch(j) {
                     case 0: clr = color; x = 0; y = 0; break;
                     case 1: clr = 7*color/8; x = 16; y = 0; break;
@@ -86,7 +81,7 @@ int main(void)
                         lcdBox(xx, yy, xx+15, yy+15);
 
             }
-            delayMs(50);
+            delay_ms(50);
         }
     }
 

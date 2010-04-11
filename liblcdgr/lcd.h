@@ -37,25 +37,20 @@
 
 /* #####   HEADER FILE INCLUDES   ################################################### */
 
+#include <inttypes.h>
+
 /**
  * lcd_config.h must be writed by user
  */
 #include <lcd_config.h>
 
-#include "lcd_const.h"
-
-/* IMPORT */
-
-/* us hardware delay */
-extern void delayUs(int us);
-
-/* ms hardware delay */
-extern void delayMs(int ms);
-
-/* #####   HARDWARE DEFINITION    ################################################### */
-
 #include "lcd_arch.h"
 
+/**
+ * lcd_hw.h must be writed by user
+ */
+#include "lcd_hw_intf.h"
+#include <lcd_hw.h>
 
 /* #####   EXPORTED MACROS   ######################################################## */
 
@@ -100,7 +95,6 @@ void lcdCircle(lcd_coord_t x, lcd_coord_t y, lcd_coord_t radius);
 void lcdCircleW(lcd_coord_t x, lcd_coord_t y, lcd_coord_t radius, lcd_width_t width);
 void lcdCircleFill(lcd_coord_t x, lcd_coord_t y, lcd_coord_t radius);
 
-
 void lcdImage(lcd_coord_t x, lcd_coord_t y, lcd_coord_t width, lcd_coord_t height, lcd_pixel_t* data);
 void lcdImagePcx(lcd_coord_t x, lcd_coord_t y, void* data);
 
@@ -108,7 +102,6 @@ void lcdCharXY(lcd_coord_t x, lcd_coord_t y, char ch);
 void lcdTextXY(lcd_coord_t x, lcd_coord_t y, char* str);
 
 void lcdTextBlock(lcd_coord_t x1, lcd_coord_t y1, lcd_coord_t x2, lcd_coord_t y2, char* str);
-
 
 #endif   /* ----- #ifndef _LCD_H_  ----- */
 

@@ -79,8 +79,6 @@ typedef uint16_t lcdvalue_t;
 typedef uint16_t lcdcolor_t;
 
 
-#include "lcd_ctl.h"
-
 #define LCD_NEED_FONT_SWAP
 
 /* Define logical display size in pixels */

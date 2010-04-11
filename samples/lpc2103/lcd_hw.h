@@ -40,46 +40,11 @@
 typedef uint16_t lcd_data_t;
 
 
-#ifdef _LCD_PRIVATE
-
-#include "lcd_mcu.h"
-
 #include "LPC2103.h"
-
-#if (LCD_USE_FONT == 1)
-
-#include <avr/pgmspace.h>
-
-const char lcd_font_data[] = {
-#include "lcd_font5x8.h"
-};
-
-#define lcdFontAddr(idx) (lcd_font_data + (idx)*5)
-#define lcdFontByte(addr) (*(addr))
-
-#endif
+#include "utils.h"
 
 //#define LCD_DELAY()     do { asm volatile(" nop "); asm volatile(" nop "); asm volatile(" nop "); } while(0);
 #define LCD_DELAY()
-
-/*
-#define LCD_DPIN        16
-#define LCD_DMASK       (0xFF<<LCD_DPIN)
-#define LCD_DIR_OUT()   do { FIO0DIR |= LCD_DMASK; } while(0);
-#define LCD_PUT(dat)    do { FIO0CLR = LCD_DMASK; FIO0SET = (((dat)&0xFF)<<LCD_DPIN); } while(0);
-#define LCD_DIR_IN()    do { FIO0DIR &= ~LCD_DMASK; } while(0);
-#define LCD_GET(dat)    do { FIO0CLR = LCD_DMASK; FIO0SET = (((dat)&0xFF)<<LCD_DPIN); } while(0);
-#define LCD_RST_MARK()  do { } while(0);
-#define LCD_RST_REL()   do { } while(0);
-#define LCD_CS_MARK()   do { } while(0);
-#define LCD_CS_REL()    do { } while(0);
-#define LCD_WR_MARK()   do { } while(0);
-#define LCD_WR_REL()    do { } while(0);
-#define LCD_RD_MARK()   do { } while(0);
-#define LCD_RD_REL()    do { } while(0);
-#define LCD_CMD()       do { } while(0);
-#define LCD_DAT()       do { } while(0);
-*/
 
 // MCU pin definitions
 #define D_D0SHIFT  16 
@@ -109,12 +74,24 @@ inline static void lcdHardwareInit(void)
     FIO0DIR |= D_MASK;
     FIO0SET = D_CTLMASK;
     FIO0CLR = D_DMASK;
+}
 
-    delayMs(50); // Wait before hardware reset
+inline static void lcdHardwareDelayMs(unsigned int ms)
+{
+    delay_ms(ms);
+}
+
+inline static void lcdHardwareDelayUs(unsigned int us)
+{
+    delay_us(us);
+}
+
+inline static void lcdHardwareReset(void)
+{
     FIO0CLR = (1<<D_RST);
-    delayMs(10);
+    lcdHardwareDelayMs(50);
     FIO0SET = (1<<D_RST);
-    delayMs(50);
+    lcdHardwareDelayMs(50);
 }
 
 inline static void lcdHardwareSelect(void)
@@ -137,7 +114,7 @@ inline static void lcdHardwareData(void)
     FIO0SET = (1<<D_RS);
 }
 
-inline static void lcdHardwarePut(uint8_t val)
+inline static void lcdHardwarePutB(uint8_t val)
 {
     FIO0CLR = D_DMASK;
     FIO0SET = (uint32_t)val<<D_D0SHIFT;
@@ -164,7 +141,7 @@ inline static void lcdHardwarePutW(uint16_t val)
     FIO0SET = (1<<D_WR);
 }
 
-inline static uint8_t lcdHardwareGet(void)
+inline static uint8_t lcdHardwareGetB(void)
 {
     uint8_t dat;
     FIO0DIR &= ~D_DMASK;
@@ -196,8 +173,6 @@ inline static uint16_t lcdHardwareGetW(void)
     FIO0DIR |= D_DMASK;
     return dat;
 }
-
-#endif /* _LCD_PRIVATE */
 
 /**
  * @}

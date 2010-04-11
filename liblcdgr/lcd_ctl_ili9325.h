@@ -31,8 +31,16 @@
  * @{
  */
 
-#ifndef _LCD_CTL_AL240P1_H_
-#define _LCD_CTL_AL240P1_H_
+#ifndef _LCD_CTL_ILI9325_H_
+#define _LCD_CTL_ILI9325_H_
+
+#include "lcd.h"
+
+/**
+ * lcd_hw.h must be writed by user
+ */
+#include "lcd_hw_intf.h"
+#include <lcd_hw.h>
 
 typedef int16_t     lcd_coord_t;
 typedef uint16_t    lcd_color_t;
@@ -68,8 +76,6 @@ typedef uint16_t    lcd_value_t;
 
 #ifdef _LCD_PRIVATE
 
-#include "lcd_ctl.h"
-
 /* Controller commands definitions */
 #define LCD_WND_HORIZ_ADDR_START    0x0050
 #define LCD_WND_HORIZ_ADDR_END      0x0051
@@ -99,10 +105,10 @@ typedef struct {
 inline static void lcdControllerInit(void)
 {
 
-    delayMs(INIT_DELAY); // 257 ms after reset
+    lcdHardwareDelayMs(INIT_DELAY); // 257 ms after reset
     lcdControllerPair(0xE5, 0x8000);
 
-    delayMs(INIT_DELAY); // 358 ms after reset
+    lcdHardwareDelayMs(INIT_DELAY); // 358 ms after reset
     lcdControllerPair(0x00, 0x0001);
     lcdControllerPair(0x01, 0x0100);
     lcdControllerPair(0xe3, 0x3008);
@@ -123,19 +129,19 @@ inline static void lcdControllerInit(void)
     lcdControllerPair(0x12, 0x0003);
     lcdControllerPair(0x13, 0x0300);
 
-    delayMs(INIT_DELAY*4); // 561 ms after reset
+    lcdHardwareDelayMs(INIT_DELAY*4); // 561 ms after reset
     lcdControllerPair(0x10, 0x1290);
     lcdControllerPair(0x11, 0x0227);
 
-    delayMs(INIT_DELAY); // 660 ms after reset
+    lcdHardwareDelayMs(INIT_DELAY); // 660 ms after reset
     lcdControllerPair(0x12, 0x011C);
 
-    delayMs(INIT_DELAY); // 763 ms after reset
+    lcdHardwareDelayMs(INIT_DELAY); // 763 ms after reset
     lcdControllerPair(0x13, 0x1F00);
     lcdControllerPair(0x29, 0x0009);
     lcdControllerPair(0x2B, 0x000D);
 
-    delayMs(INIT_DELAY); // 864 ms after reset
+    lcdHardwareDelayMs(INIT_DELAY); // 864 ms after reset
     lcdControllerPair(0x20, 0x0000);
     lcdControllerPair(0x21, 0x0000);
     lcdControllerPair(0x30, 0x0004);
@@ -171,7 +177,7 @@ inline static void lcdControllerInit(void)
     lcdControllerPair(0x98, 0x0000);
     lcdControllerPair(0x07, 0x0133);
  
-    delayMs(INIT_DELAY);
+    lcdHardwareDelayMs(INIT_DELAY);
 }
 
 inline static void lcdControllerCommand(lcd_value_t cmd)
@@ -255,7 +261,6 @@ inline static void lcdControllerDirection(uint8_t dir)
             break;
     }
 }
-
 
 inline static void lcdControllerFill(lcd_coord_t x1, lcd_coord_t y1, lcd_coord_t x2, lcd_coord_t y2, lcd_color_t clr)
 {
@@ -369,5 +374,5 @@ inline static void lcdControllerFillRect(lcd_coord_t x1, lcd_coord_t y1, lcd_coo
  * @}
  */
     
-#endif /* _LCD_CTL_AL240P1_H_ */
+#endif /* _LCD_CTL_ILI9325_H_ */
 

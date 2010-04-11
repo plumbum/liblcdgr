@@ -1,5 +1,5 @@
 /*
-    LibLCDgr - Copyright (C) 2009 Ivan A-R <ivan@tuxotronic.org>
+    LibLCDgr - Copyright (C) 2009-2010 Ivan A-R <ivan@tuxotronic.org>
 
     This file is part of liblcdgr project
 
@@ -25,26 +25,38 @@
 */
 
 /**
- * @file lcd_const.h
- * @brief
- * @addtogroup Main
+ * @file lcd_hw_intf.h
+ * @brief Hardware depended interface functions
+ * @addtogroup McuDefinitions
  * @{
  */
 
-#ifndef _LCD_CONST_H_
-#define _LCD_CONST_H_
 
+#ifndef  _LCD_HW_INTF_H_
+#define  _LCD_HW_INTF_H_
 
-#define MCU_STM32F10x 100
-#define MCU_LPC2103 200
-#define MCU_AVR 300
+inline static void lcdHardwareInit(void);
 
-#define CHIP_ST7637 100
-#define CHIP_AL240P1 200
+inline static void lcdHardwareReset(void);
+
+inline static void lcdHardwareSelect(void);
+inline static void lcdHardwareRelease(void);
+
+inline static void lcdHardwareCmd(void);
+inline static void lcdHardwareData(void);
+
+inline static void lcdHardwarePutB(uint8_t val);
+inline static void lcdHardwarePutW(uint16_t val);
+
+inline static uint8_t lcdHardwareGetB(void);
+inline static uint16_t lcdHardwareGetW(void);
+
+inline static void lcdHardwareDelayMs(unsigned int ms);
+inline static void lcdHardwareDelayUs(unsigned int us);
 
 /**
  * @}
  */
 
-#endif /* _LCD_CONST_H_ */
+#endif   /* ----- #ifndef _LCD_HW_INTF_H_  ----- */
 

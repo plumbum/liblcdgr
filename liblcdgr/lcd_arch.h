@@ -25,40 +25,36 @@
 */
 
 /**
- * @file lcd_ctl.h
- * @brief Controller interface functions
- * @addtogroup LcdChipDefinitions
+ * @file lcd_arch.h
+ * @brief
+ * @addtogroup Main
  * @{
  */
 
 
+#ifndef  _LCD_ARCH_H_
+#define  _LCD_ARCH_H_
 
-#ifndef  _LCD_CTL_H_
-#define  _LCD_CTL_H_
-
-/**
- * lcd_config.h must be writed by user
- */
 #include <lcd_config.h>
 
+/* #####   LCD controllers constant  ######################################################## */
 
-#if defined(__DOXYGEN__)
-typedef int16_t     lcd_coord_t;
-typedef uint16_t    lcd_color_t;
-typedef lcd_color_t lcd_pixel_t;
-typedef uint8_t     lcd_width_t;
-typedef uint8_t     lcd_align_t;
+#define LCD_CTL_ST7637     101
+#define LCD_CTL_AL240P1    102
+#define LCD_CTL_ILI9325    102
+#define LCD_CTL_ILI9320    102
+
+#if ((LCD_CTL == LCD_CTL_ILI9325) || (LCD_CTL == LCD_CTL_ILI9320))
+#   include "lcd_ctl_ili9325.h"
+#elif (LCD_CTL == LCD_CTL_ST7637)
+#   include "lcd_ctl_st7637.h"
+#else
+#   error "Unsupported LCD controller: " LCD_CTL
 #endif
-
-
-inline static void lcdControllerInit(void);
-
-inline static void lcdControllerFill(lcd_coord_t x1, lcd_coord_t y1, lcd_coord_t x2, lcd_coord_t y2, lcd_color_t clr);
-inline static void lcdControllerFillRect(lcd_coord_t x1, lcd_coord_t y1, lcd_coord_t x2, lcd_coord_t y2,
-        lcd_color_t fgclr, lcd_color_t bgclr, lcd_width_t border);
 
 /**
  * @}
  */
 
-#endif   /* ----- #ifndef _LCD_CTL_H_  ----- */
+#endif   /* ----- #ifndef _LCD_ARCH_H_  ----- */
+
