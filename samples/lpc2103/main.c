@@ -9,6 +9,8 @@
 
 #include <string.h>
 
+#include "fnt.h"
+
 /*
 static void dummyISR(void) __attribute__ ((interrupt));
 static void dummyISR(void)
@@ -16,6 +18,18 @@ static void dummyISR(void)
   //do something... for example print some serious error message
 }
 */
+
+void printChar(int x, int y, char c)
+{
+    int j;
+    char* p = header_data[c*32];
+
+    for(j=0; j<48; j++)
+    {
+        lcdImageMono(x, y+j, 32, 48, p);
+        p += 544;
+    }
+}
 
 int main(void)
 {
@@ -25,7 +39,7 @@ int main(void)
     FIO0CLR = 0xFFFFFFFF;
     FIO0SET = 0x0F006000;
     */
-    FIO0DIR = 0x00000000;
+    FIO0DIR = 0x00000000 | (1<<3);
     FIO0CLR = 0xFFFFFFFF;
     FIO0SET = 0x00000000;
 
@@ -67,6 +81,23 @@ int main(void)
     lcdCircleFill(64, 320-64, 32);
     lcdSetFgColor(lcdGetColor(255, 255, 0));
     lcdCircleFill(240-64, 64, 32);
+
+    printChar(0, 0, 1);
+    printChar(32, 0, 2);
+    printChar(64, 0, 3);
+
+    for(;;)
+    {
+        int i;
+        for(i=0; i<8; i++)
+        {
+            FIO0SET = (1<<3);
+            int color = color_table[i];
+            lcdSetFgColor(color);
+            FIO0CLR = (1<<3);
+            lcdCircleFill(120, 160, 103);
+        }
+    }
 
     for(;;)
     {

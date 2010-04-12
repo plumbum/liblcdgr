@@ -92,6 +92,10 @@ void lcdPixel(lcd_coord_t x, lcd_coord_t y, lcd_color_t clr)
     lcdControllerFill(x, y, x, y, clr);
 }
 
+void lcdImageMono(lcd_coord_t x, lcd_coord_t y, lcd_coord_t width, lcd_coord_t height, const uint8_t* data)
+{
+    lcdControllerImageMono(x, y, x+width-1, y+height-1, data);
+}
 
 void lcdCharXY(lcd_coord_t x, lcd_coord_t y, char ch)
 {

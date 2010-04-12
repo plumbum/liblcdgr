@@ -348,6 +348,29 @@ inline static void lcdControllerCircleFill(lcd_coord_t xc, lcd_coord_t yc, lcd_c
     }
 }
 
+inline static void lcdControllerImageMono(
+        lcd_coord_t x1, lcd_coord_t y1,
+        lcd_coord_t x2, lcd_coord_t y2,
+        const uint8_t* data)
+{
+    int x, y;
+    lcdControllerDirection(0);
+    lcdControllerWinHoriz(x1, x2);
+    lcdControllerWinVert(y1, y2);
+    lcdControllerGRAMPos(x1, y1);
+    lcdControllerCommand(LCD_GRAM_WR);
+    lcdHardwareSelect();
+    lcdHardwareData(); // We send datas only
+    for(y=y1; y<=y2; y++)
+        for(x=x1; x<=x2; x++)
+        {
+            char d = *data++;
+            lcdHardwarePutW(lcdGetColor(d, d, d));
+        }
+    lcdHardwareRelease();
+
+}
+
 #endif /* _LCD_PRIVATE */
 
 /*

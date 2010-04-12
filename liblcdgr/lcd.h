@@ -96,6 +96,7 @@ void lcdCircleW(lcd_coord_t x, lcd_coord_t y, lcd_coord_t radius, lcd_width_t wi
 void lcdCircleFill(lcd_coord_t x, lcd_coord_t y, lcd_coord_t radius);
 
 void lcdImage(lcd_coord_t x, lcd_coord_t y, lcd_coord_t width, lcd_coord_t height, lcd_pixel_t* data);
+void lcdImageMono(lcd_coord_t x, lcd_coord_t y, lcd_coord_t width, lcd_coord_t height, const uint8_t* data);
 void lcdImagePcx(lcd_coord_t x, lcd_coord_t y, void* data);
 
 void lcdCharXY(lcd_coord_t x, lcd_coord_t y, char ch);
