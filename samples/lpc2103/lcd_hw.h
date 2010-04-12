@@ -34,14 +34,16 @@
 #ifndef  _LCD_MCU_LPC2103_H_
 #define  _LCD_MCU_LPC2103_H_
 
+#include <inttypes.h>
+#include <LPC2103.h>
+#include "utils.h"
+
+/* Define LCD controller type */
+#define LCD_CTL LCD_CTL_ILI9325
 
 /* TYPES */
-
 typedef uint16_t lcd_data_t;
 
-
-#include "LPC2103.h"
-#include "utils.h"
 
 //#define LCD_DELAY()     do { asm volatile(" nop "); asm volatile(" nop "); asm volatile(" nop "); } while(0);
 #define LCD_DELAY()
@@ -76,15 +78,8 @@ inline static void lcdHardwareInit(void)
     FIO0CLR = D_DMASK;
 }
 
-inline static void lcdHardwareDelayMs(unsigned int ms)
-{
-    delay_ms(ms);
-}
-
-inline static void lcdHardwareDelayUs(unsigned int us)
-{
-    delay_us(us);
-}
+#define lcdHardwareDelayMs(ms) delay_ms(ms)
+#define lcdHardwareDelayUs(us) delay_us(us)
 
 inline static void lcdHardwareReset(void)
 {
@@ -94,25 +89,10 @@ inline static void lcdHardwareReset(void)
     lcdHardwareDelayMs(50);
 }
 
-inline static void lcdHardwareSelect(void)
-{
-    FIO0CLR = (1<<D_CS);
-}
-
-inline static void lcdHardwareRelease(void)
-{
-    FIO0SET = (1<<D_CS);
-}
-
-inline static void lcdHardwareCmd(void)
-{
-    FIO0CLR = (1<<D_RS);
-}
-
-inline static void lcdHardwareData(void)
-{
-    FIO0SET = (1<<D_RS);
-}
+#define lcdHardwareSelect(void)     FIO0CLR = (1<<D_CS)
+#define lcdHardwareRelease(void)    FIO0SET = (1<<D_CS)
+#define lcdHardwareCmd(void)        FIO0CLR = (1<<D_RS)
+#define lcdHardwareData(void)       FIO0SET = (1<<D_RS)
 
 inline static void lcdHardwarePutB(uint8_t val)
 {
