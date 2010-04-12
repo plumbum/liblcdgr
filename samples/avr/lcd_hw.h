@@ -35,95 +35,41 @@
 #define  _LCD_MCU_AVR_H_
 
 #include <inttypes.h>
-/* TYPES */
+#include <avr/io.h>
+#include <util/delay.h>
 
+/* Define LCD controller type */
+#define LCD_CTL LCD_CTL_ILI9325
+
+/* TYPES */
 typedef uint16_t lcd_data_t;
 
 
-#ifdef _LCD_PRIVATE
-
-#include "lcd_mcu.h"
-
-#include <avr/io.h>
-
-
-#ifndef LCD_RST
 #define LCD_RST     PC7
-#endif
-
-#ifndef LCD_CS
 #define LCD_CS      PB5
-#endif 
-
-#ifndef LCD_RS
 #define LCD_RS      PB4
-#endif
-
-#ifndef LCD_WR
 #define LCD_WR      PC6
-#endif
-
-#ifndef LCD_D0
+#define LCD_RD
 #define LCD_D0      PB6
-#endif
-
-#ifndef LCD_D1
 #define LCD_D1      PD1
-#endif
-
-#ifndef LCD_D7
+#define LCD_D2      PD2
+#define LCD_D3      PD3
+#define LCD_D4      PD4
+#define LCD_D5      PD5
+#define LCD_D6      PD6
 #define LCD_D7      PB7
-#endif
 
-#ifndef LCD_RST_ON
 #define LCD_RST_ON() PORTC &= ~(1<<LCD_RST)
-#endif
-
-#ifndef LCD_RST_OFF
 #define LCD_RST_OFF() PORTC |= (1<<LCD_RST)
-#endif
-
-#ifndef LCD_WR_ON
 #define LCD_WR_ON() PORTC &= ~(1<<LCD_WR)
-#endif
-
-#ifndef LCD_WR_OFF
 #define LCD_WR_OFF() PORTC |= (1<<LCD_WR)
-#endif
-
-#ifndef LCD_RD_ON
 #define LCD_RD_ON()
-#endif
-
-#ifndef LCD_RD_OFF
 #define LCD_RD_OFF()
-#endif
-
-#ifndef LCD_RS_ON
 #define LCD_RS_ON() PORTB |= (1<<LCD_RS)
-#endif
-
-#ifndef LCD_RS_OFF
 #define LCD_RS_OFF() PORTB &= ~(1<<LCD_RS)
-#endif
-
-#ifndef LCD_CS_ON
 #define LCD_CS_ON() PORTB &= ~(1<<LCD_CS)
-#endif
-
-#ifndef LCD_CS_OFF
 #define LCD_CS_OFF() PORTB |= (1<<LCD_CS)
-#endif
 
-#ifndef LCD_PORT_INIT
-#define LCD_PORT_INIT() { \
-    DDRB |= (1<<LCD_CS) | (1<<LCD_RS) | (1<<LCD_D0) | (1<<LCD_D7); \
-    DDRC |= (1<<LCD_WR) | (1<<LCD_RST); \
-    DDRD |= 0x7E; \
-}
-#endif
-
-#ifndef LCD_PUT_DATA
 #define LCD_PUT_DATA(x) \
 { \
     PORTD = (PORTD & ~0x7E) | (x & 0x7E); \
@@ -136,13 +82,9 @@ typedef uint16_t lcd_data_t;
     else \
         PORTB &= ~(1<<LCD_D0); \
 }
-#endif
-
 
 // TODO
-#ifndef LCD_GET_DATA
 #define LCD_GET_DATA() (0)
-#endif
 
 inline static void lcdHardwareInit(void)
 {
@@ -150,37 +92,30 @@ inline static void lcdHardwareInit(void)
     LCD_CS_OFF();
     LCD_RD_OFF();
     LCD_WR_OFF();
-    LCD_PORT_INIT();
 
-    delayMs(50); // Wait before hardware reset
+    // LCD_PORT_INIT
+    DDRB |= (1<<LCD_CS) | (1<<LCD_RS) | (1<<LCD_D0) | (1<<LCD_D7);
+    DDRC |= (1<<LCD_WR) | (1<<LCD_RST);
+    DDRD |= 0x7E;
+}
+
+#define lcdHardwareDelayMs(ms) _delay_ms(ms)
+#define lcdHardwareDelayUs(us) _delay_us(us)
+
+inline static void lcdHardwareReset(void)
+{
     LCD_RST_ON();
-    delayMs(10);
+    lcdHardwareDelayMs(50);
     LCD_RST_OFF();
-    delayMs(50);
+    lcdHardwareDelayMs(50);
 }
 
+#define lcdHardwareSelect(void)     LCD_CS_ON()
+#define lcdHardwareRelease(void)    LCD_CS_OFF()
+#define lcdHardwareCmd(void)        LCD_RS_OFF()
+#define lcdHardwareData(void)       LCD_RS_ON()
 
-inline static void lcdHardwareSelect(void)
-{
-    LCD_CS_ON();
-}
-
-inline static void lcdHardwareRelease(void)
-{
-    LCD_CS_OFF();
-}
-
-inline static void lcdHardwareCmd(void)
-{
-    LCD_RS_OFF();
-}
-
-inline static void lcdHardwareData(void)
-{
-    LCD_RS_ON();
-}
-
-inline static void lcdHardwarePut(uint8_t val)
+inline static void lcdHardwarePutB(uint8_t val)
 {
     LCD_PUT_DATA(val);
     LCD_WR_ON();
@@ -197,24 +132,31 @@ inline static void lcdHardwarePutW(uint16_t val)
     LCD_WR_OFF();
 }
 
-inline static uint8_t lcdHardwareGet(void)
+inline static uint8_t lcdHardwareGetB(void)
 {
-    return LCD_GET_DATA();
+    uint8_t r;
+    LCD_RD_ON();
+    r = LCD_GET_DATA();
+    LCD_RD_OFF();
+    return r;
 }
 
 inline static uint16_t lcdHardwareGetW(void)
 {
     uint16_t r;
+    LCD_RD_ON();
     r = LCD_GET_DATA()<<8;
-    return r | LCD_GET_DATA();
+    LCD_RD_OFF();
+    LCD_RD_ON();
+    r |=  LCD_GET_DATA();
+    LCD_RD_OFF();
+    return r;
 }
 
-#endif /* _LCD_PRIVATE */
 
 /**
  * @}
  */
-
 
 #endif   /* ----- #ifndef _LCD_MCU_AVR_H_  ----- */
 

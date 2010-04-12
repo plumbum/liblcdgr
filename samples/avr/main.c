@@ -43,11 +43,6 @@ char getKeys(void)
 #define PWR_ON PORTC &= ~(1<<PRF_PWR);
 #define PWR_OFF PORTC |= (1<<PRF_PWR);
 
-void delayMs(int ms)
-{
-    delay_ms(ms);
-}
-
 int main(void)
 {
 #ifdef WDT_ENABLE
@@ -114,23 +109,44 @@ int main(void)
     lcdFillRect(100, 100, 200, 200, 3);
     */
 
+    const int color_table[] = {
+        lcdGetColor(0, 0, 0),
+        lcdGetColor(0, 0, 255),
+        lcdGetColor(0, 255, 0),
+        lcdGetColor(0, 255, 255),
+        lcdGetColor(255, 0, 0),
+        lcdGetColor(255, 0, 255),
+        lcdGetColor(255, 255, 0),
+        lcdGetColor(255, 255, 255),
+    };
+
+    lcdSetFgColor(lcdGetColor(128, 128, 128));
+    lcdCircleFill(120, 160, 103);
+
+    lcdSetFgColor(lcdGetColor(0, 255, 0));
+    lcdCircleFill(64, 64, 32);
+    lcdSetFgColor(lcdGetColor(0, 0, 255));
+    lcdCircleFill(240-64, 320-64, 32);
+    lcdSetFgColor(lcdGetColor(255, 0, 0));
+    lcdCircleFill(64, 320-64, 32);
+    lcdSetFgColor(lcdGetColor(255, 255, 0));
+    lcdCircleFill(240-64, 64, 32);
+
     for(;;)
     {
-        wdr();
-
-        /*
-        PORTB |= (1<<PB7);
-        _delay_us(1);
-        PORTB &= ~(1<<PB7);
-        _delay_us(1);
-        */
-
-
-        if((PIND & (1<<PD7)) == 0)
+        int i;
+        for(i=0; i<8; i++)
         {
-            asm("jmp 0x3000");
-        }
+            wdr();
+            int color = color_table[i];
+            lcdSetFgColor(color);
+            lcdCircleFill(120, 160, 103);
 
+            if((PIND & (1<<PD7)) == 0)
+            {
+                asm("jmp 0x3000");
+            }
+        }
     }
     return 0;
 }

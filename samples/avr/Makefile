@@ -66,7 +66,7 @@ OPT = s
 # List C source files here. (C dependencies are automatically generated.)
 SRC = main.c
 SRC += helpers.c
-SRC += ../../liblcd/lcd.c
+SRC += ../../liblcdgr/lcd.c
 
 
 # If there is more than one source file, append them above, or modify and
@@ -91,7 +91,7 @@ ASRC =
 
 # List any extra directories to look for include files here.
 #     Each directory must be seperated by a space.
-EXTRAINCDIRS = ../../liblcd
+EXTRAINCDIRS = ../../liblcdgr
 
 # Place -D or -U options here
 CDEFS = -DF_CPU=$(F_CPU)UL
@@ -443,7 +443,7 @@ clean_list :
 -include $(SRC:.c=.d)
 
 tags:
-	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q ..
+	ctags -R --c++-kinds=+p --fields=+iaS --extra=+q . ../../liblcdgr
 
 # Listing of phony targets.
 .PHONY : all begin finish end sizebefore sizeafter gccversion coff extcoff \
