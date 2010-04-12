@@ -39,18 +39,7 @@
 
 #include <inttypes.h>
 
-/**
- * lcd_config.h must be writed by user
- */
-#include <lcd_config.h>
-
 #include "lcd_arch.h"
-
-/**
- * lcd_hw.h must be writed by user
- */
-#include "lcd_hw_intf.h"
-#include <lcd_hw.h>
 
 /* #####   EXPORTED MACROS   ######################################################## */
 

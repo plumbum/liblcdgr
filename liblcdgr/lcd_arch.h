@@ -35,14 +35,19 @@
 #ifndef  _LCD_ARCH_H_
 #define  _LCD_ARCH_H_
 
-#include <lcd_config.h>
-
-/* #####   LCD controllers constant  ######################################################## */
-
+/*
+ * LCD controllers constant
+ */
 #define LCD_CTL_ST7637     101
 #define LCD_CTL_AL240P1    102
 #define LCD_CTL_ILI9325    102
 #define LCD_CTL_ILI9320    102
+
+/**
+ * lcd_hw.h must be writed by user
+ */
+#include "lcd_hw_intf.h"
+#include <lcd_hw.h>
 
 #if ((LCD_CTL == LCD_CTL_ILI9325) || (LCD_CTL == LCD_CTL_ILI9320))
 #   include "lcd_ctl_ili9325.h"

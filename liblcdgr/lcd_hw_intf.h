@@ -35,6 +35,7 @@
 #ifndef  _LCD_HW_INTF_H_
 #define  _LCD_HW_INTF_H_
 
+#ifdef __DOXYGEN__
 inline static void lcdHardwareInit(void);
 
 inline static void lcdHardwareReset(void);
@@ -53,6 +54,8 @@ inline static uint16_t lcdHardwareGetW(void);
 
 inline static void lcdHardwareDelayMs(unsigned int ms);
 inline static void lcdHardwareDelayUs(unsigned int us);
+
+#endif /* __DOXYGEN__ */
 
 /**
  * @}

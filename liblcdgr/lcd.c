@@ -47,6 +47,7 @@ static lcd_color_t bgclr;
 void lcdInit()
 {
     lcdHardwareInit();
+    lcdHardwareReset();
     lcdControllerInit();
 
     fgclr = FGCLR_DEFAULT;
