@@ -303,6 +303,7 @@ inline static void lcdControllerFillRect(lcd_coord_t x1, lcd_coord_t y1, lcd_coo
     lcdHardwareRelease();
 }
 
+/*
 inline static unsigned int sqrt_newton(int l)
 {
       long temp , div;
@@ -345,6 +346,43 @@ inline static void lcdControllerCircleFill(lcd_coord_t xc, lcd_coord_t yc, lcd_c
         x = sqrt_newton(r2 - y*y);
         lcdControllerFill(xc-x, yc+y, xc+x, yc+y, fgclr);
         lcdControllerFill(xc-x, yc-y, xc+x, yc-y, fgclr);
+    }
+}
+*/
+
+inline static void lcdControllerCircleFill(lcd_coord_t xc, lcd_coord_t yc, lcd_coord_t radius,
+        lcd_color_t fgclr)
+{
+    int x = -radius;
+    int y = 0;
+
+    int F = 1-radius;
+    int dFs = 3;
+    int dFd = 5-2*radius;
+
+    while ( x + y <= 0 )
+    {
+        lcdControllerFill(xc+x, yc+y, xc-x, yc+y, fgclr);
+        lcdControllerFill(xc+x, yc-y, xc-x, yc-y, fgclr);
+        lcdControllerFill(xc-y, yc-x, xc+y, yc-x, fgclr);
+        lcdControllerFill(xc-y, yc+x, xc+y, yc+x, fgclr);
+        if ( F > 0 )
+        {
+            // d: Диагональное смещение
+            F += dFd;
+            x++;
+            y++;
+            dFs += 2;
+            dFd += 4;
+        }
+        else
+        {
+            // s: Вертикальное смещение
+            F += dFs;
+            y++;
+            dFs += 2;
+            dFd += 2;
+        }
     }
 }
 

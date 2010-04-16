@@ -84,11 +84,12 @@ int main(void)
         int i;
         for(i=0; i<8; i++)
         {
-            FIO0SET = (1<<3);
             int color = color_table[i];
             lcdSetFgColor(color);
-            FIO0CLR = (1<<3);
             lcdCircleFill(120, 160, 103);
+            FIO0SET = (1<<3);
+            lcdCircleFill(120, 160, 103);
+            FIO0CLR = (1<<3);
         }
     }
 
