@@ -364,10 +364,10 @@ inline static void lcdControllerCircleFill(lcd_coord_t xc, lcd_coord_t yc, lcd_c
     {
         lcdControllerFill(xc+x, yc+y, xc-x, yc+y, fgclr);
         lcdControllerFill(xc+x, yc-y, xc-x, yc-y, fgclr);
-        lcdControllerFill(xc-y, yc-x, xc+y, yc-x, fgclr);
-        lcdControllerFill(xc-y, yc+x, xc+y, yc+x, fgclr);
         if ( F > 0 )
         {
+            lcdControllerFill(xc-y, yc-x, xc+y, yc-x, fgclr);
+            lcdControllerFill(xc-y, yc+x, xc+y, yc+x, fgclr);
             // d: Диагональное смещение
             F += dFd;
             x++;
